@@ -608,6 +608,7 @@
 					echo "<div class='users-table-row flex justify-content-center'>";
 					echo "<div class='user-name'>$row[username]</div>";
 
+					// Get user role
 					$user_role = mysqli_query($con, "SELECT rolename FROM user_role  WHERE id='$row[role_id]' limit 1 ");
 
 					if ( $user_role->num_rows > 0 ) {
