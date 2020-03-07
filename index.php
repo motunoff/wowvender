@@ -597,11 +597,10 @@
 
 			<?php
 
-			//Get users list
+			// Get users list
 			$users = mysqli_query($con, "SELECT * FROM user");
 
 			if ( $users->num_rows > 0 ) {
-
 
 				while ( $row = $users->fetch_assoc() ) {
 
