@@ -467,7 +467,7 @@
 	.forms-wrap form:not(:last-of-type) {
 		margin-right: 25px;
 	}
-	
+
 	.forms-wrap form fieldset {
 		border: 0;
 	}
@@ -591,12 +591,13 @@
 
 		<h1>List users</h1>
 
-		
+
 		<section class="users-table">
 
 
 			<?php
 
+			//Get users list
 			$users = mysqli_query($con, "SELECT * FROM user");
 
 			if ( $users->num_rows > 0 ) {
@@ -634,7 +635,7 @@
 
 		</section>
 
-		
+
 		<section class="forms-wrap flex justify-content-center">
 
 			<form id="add-new-user-role" action="#" method="post" enctype="multipart/form-data">
@@ -672,9 +673,9 @@
 						if ( $result->num_rows > 0 ) {
 
 							while ( $row = $result->fetch_assoc() ) {
-								
+
 								echo "<option value='$row[id]'>$row[rolename]</option>";
-								
+
 							}
 
 						}
