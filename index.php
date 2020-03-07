@@ -591,6 +591,7 @@
 
 		<h1>List users</h1>
 
+		
 		<section class="users-table">
 
 
@@ -633,6 +634,7 @@
 
 		</section>
 
+		
 		<section class="forms-wrap flex justify-content-center">
 
 			<form id="add-new-user-role" action="#" method="post" enctype="multipart/form-data">
@@ -666,14 +668,14 @@
 
 						$result = mysqli_query($con, "SELECT * FROM user_role  ");
 
-						// If role exists		
+						// Display user roles	
 						if ( $result->num_rows > 0 ) {
 
 							while ( $row = $result->fetch_assoc() ) {
+								
 								echo "<option value='$row[id]'>$row[rolename]</option>";
-								//echo "id: " . $row["id"] . " - Name: " . $row["firstname"] . " " . $row["lastname"] . "<br>";
+								
 							}
-
 
 						}
 
@@ -689,7 +691,6 @@
 				<p class="result"></p>
 
 			</form>
-
 
 		</section>
 
