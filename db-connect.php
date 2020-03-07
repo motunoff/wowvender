@@ -2,7 +2,7 @@
 
 $servername = "localhost";
 $username = "root";
-$password = "3adc70a4";
+$password = "wowvender";
 $db = 'wowvender';
 
 // Create connection

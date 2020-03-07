@@ -8,10 +8,10 @@
 if ( isset($_POST) && $_POST['action'] === 'add_user_role' ) {
 
 	$user_role = $_POST['user_role'];
-	$sanitize = preg_match('/^[a-z0-9-]+$/', $_POST['user_role']);
+	$pattern = preg_match('/^[a-z0-9-]+$/', $_POST['user_role']);
 
 	// Use only lowercase characters, numbers, or "-" in rolename table
-	if ( 1 === $sanitize ) {
+	if ( 1 === $pattern ) {
 
 		// Create db connection
 		require_once 'db-connect.php';
@@ -60,7 +60,7 @@ if ( isset($_POST) && $_POST['action'] === 'add_user_role' ) {
 
 	} else {
 
-		// Show msg error sanitize rolename
+		// Show msg error pattern rolename
 		echo json_encode([ 'result' => 'false', 'msg' => 'Use only lowercase characters, numbers, or "-" ' ]);
 
 	}
@@ -78,10 +78,10 @@ if ( isset($_POST) && $_POST['action'] === 'add_user' ) {
 
 	$user_name = $_POST['user_name'];
 	$user_role = (int) $_POST['user_role'];
-	$sanitize = preg_match('/^[[a-zA-Z0-9-]+$/', $_POST['user_name']);
+	$pattern = preg_match('/^[[a-zA-Z0-9-]+$/', $_POST['user_name']);
 
 	// Use only characters, numbers, or "-" in username table
-	if ( 1 === $sanitize ) {
+	if ( 1 === $pattern ) {
 
 		// Create db connection
 		require_once 'db-connect.php';
@@ -130,7 +130,7 @@ if ( isset($_POST) && $_POST['action'] === 'add_user' ) {
 
 	} else {
 
-		// Show msg error sanitize username
+		// Show msg error pattern username
 		echo json_encode([ 'result' => 'false', 'msg' => 'Use only characters, numbers, or "-" ' ]);
 
 	}
