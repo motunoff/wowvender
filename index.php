@@ -583,7 +583,8 @@
 
 
 		<?
-
+		
+		// Create db connection
 		require_once 'db-connect.php';
 
 		?>

@@ -13,7 +13,7 @@ if ( isset($_POST) && $_POST['action'] === 'add_user_role' ) {
 	// Use only lowercase characters, numbers, or "-" in rolename table
 	if ( 1 === $sanitize ) {
 
-		// bd connection
+		// Create db connection
 		require_once 'db-connect.php';
 
 		// Check connection
@@ -83,7 +83,7 @@ if ( isset($_POST) && $_POST['action'] === 'add_user' ) {
 	// Use only characters, numbers, or "-" in username table
 	if ( 1 === $sanitize ) {
 
-		// bd connection
+		// Create db connection
 		require_once 'db-connect.php';
 
 		// Check connection
