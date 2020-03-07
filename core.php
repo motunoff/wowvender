@@ -1,12 +1,12 @@
 <?php
+/**
+ *
+ * Adding new user role
+ *
+ */
 
 if ( isset($_POST) && $_POST['action'] === 'add_user_role' ) {
 
-	/**
-	 *
-	 * Adding new user role
-	 *
-	 */
 	$user_role = $_POST['user_role'];
 	$sanitize = preg_match('/^[a-z0-9-]+$/', $_POST['user_role']);
 
@@ -24,7 +24,6 @@ if ( isset($_POST) && $_POST['action'] === 'add_user_role' ) {
 
 		} else {
 
-
 			// Check if this role exists
 			$result = mysqli_query($con, "SELECT * FROM user_role  WHERE rolename	='$user_role'  ");
 
@@ -39,13 +38,11 @@ if ( isset($_POST) && $_POST['action'] === 'add_user_role' ) {
 				// Role not exists in db, can add new
 				$sql_insert = "INSERT INTO user_role (rolename)	VALUES ('$user_role')";
 
-
 				// Check if new role insert
 				if ( $con->query($sql_insert) === TRUE ) {
 
 					// Show msg success role adding 
 					echo json_encode([ 'result' => 'true', 'msg' => 'New role created successfully' ]);
-
 
 				} else {
 
@@ -59,6 +56,7 @@ if ( isset($_POST) && $_POST['action'] === 'add_user_role' ) {
 		}
 
 		// close current mysql connection
+		$con->close();
 
 	} else {
 
@@ -66,19 +64,23 @@ if ( isset($_POST) && $_POST['action'] === 'add_user_role' ) {
 		echo json_encode([ 'result' => 'false', 'msg' => 'Use only lowercase characters, numbers, or "-" ' ]);
 
 	}
+
 }
+
 
 /**
  *
  * Adding new user
  *
  */
+
 if ( isset($_POST) && $_POST['action'] === 'add_user' ) {
+
 	$user_name = $_POST['user_name'];
 	$user_role = (int) $_POST['user_role'];
 	$sanitize = preg_match('/^[[a-zA-Z0-9-]+$/', $_POST['user_name']);
 
-// Use only characters, numbers, or "-" in rolename table
+	// Use only characters, numbers, or "-" in username table
 	if ( 1 === $sanitize ) {
 
 		// bd connection
@@ -91,7 +93,6 @@ if ( isset($_POST) && $_POST['action'] === 'add_user' ) {
 			echo json_encode([ 'result' => 'false', 'msg' => mysqli_connect_error() ]);
 
 		} else {
-
 
 			// Check if User exists
 			$result = mysqli_query($con, "SELECT * FROM user  WHERE username	='$user_name'  ");
@@ -107,14 +108,12 @@ if ( isset($_POST) && $_POST['action'] === 'add_user' ) {
 				// User not exists in db, can add new
 				$sql_insert = "INSERT INTO user (username,role_id)	VALUES ('$user_name','$user_role')";
 
-
 				// Check if new User insert
 				if ( $con->query($sql_insert) === TRUE ) {
 
 					// Show msg success role adding 
 					echo json_encode([ 'result' => 'true', 'msg' => 'New user created successfully' ]);
-
-
+					
 				} else {
 
 					// Show msg error role insert
@@ -126,12 +125,14 @@ if ( isset($_POST) && $_POST['action'] === 'add_user' ) {
 
 		}
 
+		// close current mysql connection
+		$con->close();
+
 	} else {
 
 		// Show msg error sanitize username
 		echo json_encode([ 'result' => 'false', 'msg' => 'Use only characters, numbers, or "-" ' ]);
 
 	}
-
 
 } 

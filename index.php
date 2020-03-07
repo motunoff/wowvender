@@ -5,6 +5,7 @@
 </head>
 <body>
 <style>
+
 	/* simple reset css*/
 
 	html {
@@ -377,7 +378,9 @@
 		justify-content: space-around;
 	}
 
+
 	/** header **/
+
 
 	#header {
 		background-color: whitesmoke;
@@ -403,15 +406,18 @@
 
 
 	/* global */
+	.page-content {
+		padding: 15px 0;
+	}
 
-	.main-content h1 {
+	.page-content h1 {
 
 		margin: 18px 0;
 		font-size: 28px;
 		text-align: center;
 	}
 
-	.main-content h2 {
+	.page-content h2 {
 		margin-bottom: 15px;
 		color: #1a1a1a;
 		text-align: center;
@@ -420,23 +426,21 @@
 
 	}
 
-	.post-content {
-		padding: 15px 0;
-	}
-
 	/* front page*/
 
 	.users-table {
-		max-width: 60%;
+		width: 400px;
 		margin: 25px auto;
-		padding: 25px;
+		padding: 25px 15px;
 		background: #d9d9d9;
+		box-shadow: 1px 1px 0 silver;
+		border-radius: 4px;
 	}
 
 	.users-table .user-name {
 		width: 200px;
 		height: 35px;
-		margin-right: 5px;
+		margin-right: 2.5px;
 		padding: 0 10px;
 		line-height: 35px;
 		background: #fff;
@@ -453,13 +457,17 @@
 	}
 
 	.forms-wrap form {
-		width: 45%;
+		width: 400px;
 		padding: 15px 25px;
 		background: #d9d9d9;
 		box-shadow: 1px 1px 0 silver;
 		border-radius: 4px;
 	}
 
+	.forms-wrap form:not(:last-of-type) {
+		margin-right: 25px;
+	}
+	
 	.forms-wrap form fieldset {
 		border: 0;
 	}
@@ -473,8 +481,9 @@
 		line-height: 35px;
 		border: none;
 		outline: none;
+		background: #fff;
+		border-radius: 4px;
 	}
-
 
 	.forms-wrap form button {
 		display: block;
@@ -510,7 +519,6 @@
 	}
 
 	.btn-green {
-
 		background-color: #4caf50;
 		color: #ffffff;
 		border-color: #4caf50 !important;
@@ -519,6 +527,11 @@
 		-moz-box-shadow: 1px 1px 1px 1px rgba(68, 157, 72, 1);
 		transition: all 0.55s;
 	}
+
+	.result {
+		text-align: center;
+	}
+
 
 	/* footer */
 
@@ -564,143 +577,126 @@
 </header>
 <!-- end #header -->
 
-<!-- .main-content -->
-<div class="main-content">
+<!-- .page-content -->
+<div class="page-content">
+	<div class="container">
 
 
-	<!-- .page-content -->
-	<div class="main-container">
+		<?
 
-		<div class="container">
+		require_once 'db-connect.php';
+
+		?>
 
 
-			<div class="main-content">
+		<h1>List users</h1>
 
-				<div class="post-content">
+		<section class="users-table">
 
-					<?
 
-					require_once 'db-connect.php';
+			<?php
 
-					?>
-					<h1>List users</h1>
+			$users = mysqli_query($con, "SELECT * FROM user");
 
-					<div class="users-table">
+			if ( $users->num_rows > 0 ) {
 
+
+				while ( $row = $users->fetch_assoc() ) {
+
+					echo "<div class='users-table-row flex justify-content-center'>";
+					echo "<div class='user-name'>$row[username]</div>";
+
+					$user_role = mysqli_query($con, "SELECT rolename FROM user_role  WHERE id	='$row[role_id]' limit 1 ");
+
+					if ( $user_role->num_rows > 0 ) {
+
+						$obj = mysqli_fetch_object($user_role);
+
+						echo "<div class='user-role'>$obj->rolename</div>";
+
+					} else {
+
+						echo 'Error in request';
+					}
+
+					echo '</div>';
+				}
+
+			} else {
+
+				echo '<h2>Users not found</h2>';
+
+			}
+
+			?>
+
+
+		</section>
+
+		<section class="forms-wrap flex justify-content-center">
+
+			<form id="add-new-user-role" action="#" method="post" enctype="multipart/form-data">
+
+				<h2>Add new user role</h2>
+
+				<fieldset>
+					<input type="text" id="user-role" name="user_role" placeholder="User role" required>
+				</fieldset>
+
+				<button type="submit" class="btn-yellow">Add new role</button>
+
+				<p class="result"></p>
+
+			</form>
+
+			<form id="add-new-user" action="#" method="post" enctype="multipart/form-data">
+
+				<h2>Add new user </h2>
+
+				<fieldset>
+
+					<input type="text" id="user-name" name="user_name" placeholder="User name " required>
+
+					<select id="select-user-role" name="select_user_role" required>
 
 						<?php
 
-						$users = mysqli_query($con, "SELECT * FROM user");
-
-						if ( $users->num_rows > 0 ) {
+						echo "<option value=''>Select user role</option>";
 
 
-							while ( $row = $users->fetch_assoc() ) {
+						$result = mysqli_query($con, "SELECT * FROM user_role  ");
 
-								echo "<div class='users-table-row flex justify-content-center'>";
-								echo "<div class='user-name'>$row[username]</div>";
+						// If role exists		
+						if ( $result->num_rows > 0 ) {
 
-								$user_role = mysqli_query($con, "SELECT rolename FROM user_role  WHERE id	='$row[role_id]' limit 1 ");
-
-
-								if ( $user_role->num_rows > 0 ) {
-
-									$obj = mysqli_fetch_object($user_role);
-
-									echo "<div class='user-role'>$obj->rolename</div>";
-
-								} else {
-
-									echo 'Error in request';
-								}
-
-
-								echo '</div>';
+							while ( $row = $result->fetch_assoc() ) {
+								echo "<option value='$row[id]'>$row[rolename]</option>";
+								//echo "id: " . $row["id"] . " - Name: " . $row["firstname"] . " " . $row["lastname"] . "<br>";
 							}
 
 
-						} else {
-
-							echo '<h2>Users not found</h2>';
-
 						}
+
 						?>
 
-					</div>
 
-					<section class="forms-wrap flex justify-content-space-between">
+					</select>
 
-						<form id="add-new-user-role" action="#" method="post" enctype="multipart/form-data">
+				</fieldset>
 
-							<h2>Add new user role</h2>
+				<button type="submit" class="btn-green">Add new user</button>
 
-							<fieldset>
-								<input type="text" id="user-role" name="user_role" placeholder="User role" required>
-							</fieldset>
+				<p class="result"></p>
 
-							<button type="submit" class="btn-yellow">Add new role</button>
-
-							<p class="result"></p>
-
-						</form>
-
-						<form id="add-new-user" action="#" method="post" enctype="multipart/form-data">
-
-							<h2>Add new user </h2>
-
-							<fieldset>
-
-								<input type="text" id="user-name" name="user_name" placeholder="User name " required>
-
-								<select id="select-user-role" name="select_user_role" required>
-
-									<?php
-
-									echo "<option value=''>Select user role</option>";
+			</form>
 
 
-									$result = mysqli_query($con, "SELECT * FROM user_role  ");
+		</section>
 
-									// If role exists		
-									if ( $result->num_rows > 0 ) {
-
-										while ( $row = $result->fetch_assoc() ) {
-											echo "<option value='$row[id]'>$row[rolename]</option>";
-											//echo "id: " . $row["id"] . " - Name: " . $row["firstname"] . " " . $row["lastname"] . "<br>";
-										}
-
-
-									}
-
-									?>
-
-
-								</select>
-
-							</fieldset>
-
-							<button type="submit" class="btn-green">Add new user</button>
-
-							<p class="result"></p>
-
-						</form>
-
-
-					</section>
-
-				</div>
-
-			</div>
-
-
-		</div>
 
 	</div>
-	<!-- end .main-container -->
-
-
 </div>
-<!-- end .main-content -->
+<!-- end .page-content -->
 
 <!-- #footer -->
 <footer id="footer">
